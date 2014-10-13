@@ -16,6 +16,15 @@ def evenSplit(dat,fld):
     return fin_temp
 
 
+def trainTest(dat, pct):
+    '''
+    Randomly splits data into train and test
+    '''
+    dat_shuf = dat.reindex(np.random.permutation(dat.index))
+    trn = dat_shuf[:int(np.floor(dat_shuf.shape[0]*pct))]
+    tst = dat_shuf[int(np.floor(dat_shuf.shape[0]*pct)):]
+    return [trn, tst]
+
 def downSample(dat,fld,mult):
     '''
     Evenly splits the data on a given binary field, returns a shuffled dataframe
