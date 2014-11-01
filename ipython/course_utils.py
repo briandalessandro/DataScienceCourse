@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn
-
+import math
 
 def evenSplit(dat,fld):
     '''
@@ -86,3 +86,35 @@ def plotSVM(X, Y, my_svm):
     #plt.show()
 
 
+def getP(val):
+    '''
+    Get f(x) where f is the logistic function 
+    '''
+    return (1+math.exp(-1*val))**-1
+
+def getY(val):
+    '''
+    Return a binary indicator based on a binomial draw with prob=f(val). f the logistic function.
+    '''
+    return (int(getP(val)>np.random.uniform(0,1,1)[0]))
+
+def gen_logistic_dataframe(n,alpha,betas):
+    '''
+    Aa function that generates a random logistic dataset
+    n is the number of samples
+    alpha, betas are the logistic truth
+    '''
+    X = np.random.random([n,len(betas)])
+    Y = map(getY,X.dot(betas)+alpha)
+    d = pd.DataFrame(X,columns=['f'+str(j) for j in range(X.shape[1])])
+    d['Y'] = Y
+    return d
+
+
+
+def LogLoss(dat, beta, alpha):
+    X = dat.drop('Y',1)
+    Y = dat['Y']
+    XB=X.dot(np.array(beta))+alpha*np.ones(len(Y))
+    P=(1+np.exp(-1*XB))**-1
+    return ((Y==1)*np.log(P)+(Y==0)*np.log(1-P)).mean()
