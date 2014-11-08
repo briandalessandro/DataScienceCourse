@@ -118,3 +118,23 @@ def LogLoss(dat, beta, alpha):
     XB=X.dot(np.array(beta))+alpha*np.ones(len(Y))
     P=(1+np.exp(-1*XB))**-1
     return ((Y==1)*np.log(P)+(Y==0)*np.log(1-P)).mean()
+
+
+def plotSVD(sig):
+    norm = math.sqrt(sum(sig*sig))
+    energy_k = [math.sqrt(k)/norm for k in np.cumsum(sig*sig)]
+
+    plt.figure()
+    ax1 = plt.subplot(211)
+    ax1.bar(range(len(sig+1)), [0]+sig, 0.35)
+    plt.title('Kth Singular Value')
+    plt.tick_params(axis='x',which='both',bottom='off',top='off',labelbottom='off')
+
+    ax2 = plt.subplot(212)
+    plt.plot(range(len(sig)+1), [0]+energy_k)
+    plt.title('Normalized Sum-of-Squares of Kth Singular Value')
+
+    ax2.set_xlabel('Kth Singular Value')
+    ax2.set_ylim([0, 1])
+
+
