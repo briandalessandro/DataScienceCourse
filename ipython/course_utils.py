@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn
 import math
+from sklearn.metrics import roc_curve, auc
+import pickle
 
 def evenSplit(dat,fld):
     '''
@@ -111,6 +113,20 @@ def gen_logistic_dataframe(n,alpha,betas):
     return d
 
 
+def plotAUC(truth, pred, lab):
+    fpr, tpr, thresholds = roc_curve(truth, pred)
+    roc_auc = auc(fpr, tpr)
+    c = (np.random.rand(), np.random.rand(), np.random.rand())
+    plt.plot(fpr, tpr, color=c, label= lab+' (AUC = %0.2f)' % roc_auc)
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.0])
+    plt.xlabel('FPR')
+    plt.ylabel('TPR')
+    plt.title('ROC')
+    plt.legend(loc="lower right")
+
+
 
 def LogLoss(dat, beta, alpha):
     X = dat.drop('Y',1)
@@ -138,3 +154,39 @@ def plotSVD(sig):
     ax2.set_ylim([0, 1])
 
 
+def genY(x, err, betas):
+    '''
+    Goal: generate a Y variable as Y=XB+e 
+    Input
+    1. an np array x of length n
+    2. a random noise vector r of length n
+    3. a (d+1) x 1 vector of coefficients b - each represents ith degree of x
+    '''
+    d = pd.DataFrame(x, columns=['x'])    
+    y = err
+    for i,b in enumerate(betas):
+        y = y + b*x**i
+    d['y'] = y
+    return d
+
+
+def makePolyFeat(d, deg):
+    '''
+    Goal: Generate features up to X**deg
+    1. a data frame with two features X and Y
+    4. a degree 'deg' (from which we make polynomial features 
+    
+    '''
+    #Generate Polynomial terms
+    for i in range(2, deg+1):
+        d['x'+str(i)] = d['x']**i
+    return d
+
+
+def save_obj(obj, name ):
+    with open(name + '.pkl', 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+def load_obj(name ):
+    with open(name + '.pkl', 'r') as f:
+        return pickle.load(f)
