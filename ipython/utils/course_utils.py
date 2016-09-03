@@ -136,6 +136,12 @@ def LogLoss(dat, beta, alpha):
     return ((Y==1)*np.log(P)+(Y==0)*np.log(1-P)).mean()
 
 
+def LogLossP(Y, P):
+    return ((Y==1)*np.log(P)+(Y==0)*np.log(1-P)).mean()
+
+
+
+
 def plotSVD(sig):
     norm = math.sqrt(sum(sig*sig))
     energy_k = [math.sqrt(k)/norm for k in np.cumsum(sig*sig)]
@@ -190,3 +196,45 @@ def save_obj(obj, name ):
 def load_obj(name ):
     with open(name + '.pkl', 'r') as f:
         return pickle.load(f)
+
+
+
+
+def happyClass(sig, n):
+    '''
+    sig is the noise parameter and n is sample size
+    '''
+    eye1 = [(0.7, 0.75), 0.1]
+    eye2 = [(0.3, 0.75), 0.1]
+
+    X1 = np.random.random(n)
+    X2 = np.random.random(n)
+    Y1 = 1*(((X1 - eye1[0][0])**2 + (X2 - eye1[0][1])**2 + np.random.randn(n)*sig) < eye1[1]**2)
+    Y2 = 1*(((X1 - eye2[0][0])**2 + (X2 - eye2[0][1])**2 + np.random.randn(n)*sig) < eye2[1]**2)
+    Y3 = 1*(abs(X2 - 0.1 - 4*(X1 - 0.5)**2) + np.random.randn(n)*5*sig < 0.05) * 1*(X2 < 0.5) 
+    
+    Y = 1*((Y1 + Y2 + Y3) > 0)
+    D = pd.DataFrame({'X1':X1, 'X2':X2})
+    D['Y'] = Y
+
+    return D
+
+
+def plotZgen(clf, dat, pc, t, fig):
+    '''
+    This plots a 2d decision boundary given a trained classifier
+    Note the data must have two fields X1 and X2 to work
+    '''
+    plot_step = 0.02
+    x_min, x_max = dat['X1'].min(), dat['X1'].max()
+    y_min, y_max = dat['X2'].min(), dat['X2'].max()
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, plot_step),np.arange(y_min, y_max, plot_step))
+    Z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
+    Z = Z.reshape(xx.shape)
+    ax = fig.add_subplot(pc[0], pc[1], pc[2])
+    cs = plt.contourf(xx, yy, Z, cmap=plt.cm.cool)
+    plt.plot(dat['X1'][(dat.Y==1)], dat['X2'][(noisy_test.Y==1)], 'r.', markersize = 2)
+    plt.title(t)
+    ax.axes.get_xaxis().set_visible(False)
+    ax.axes.get_yaxis().set_visible(False)
+
