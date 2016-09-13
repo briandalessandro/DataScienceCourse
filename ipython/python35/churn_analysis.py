@@ -6,7 +6,11 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 import sklearn.metrics as skm
-sys.path.append("./utils/")
+import os
+
+cwd = os.getcwd()
+sys.path.append('/'.join(cwd.split('/')[0:-1]) + '/utils')
+
 from ClassifierBakeoff import *
 
 import warnings
