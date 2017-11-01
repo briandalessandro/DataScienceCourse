@@ -53,7 +53,7 @@ def scaleData(d):
 
 def plot_dec_line(mn,mx,b0,b1,a,col,lab):
     '''
-    This function plots a line in a 2 dim space
+    This function plots a line in a 2 dim space given by the equation [b0,b1] * x + a = 0
     '''
     x = np.random.uniform(mn,mx,100)
     dec_line = list(map(lambda x_i: -1*(x_i*b0/b1+a/b1),x))
@@ -69,13 +69,13 @@ def plotSVM(X, Y, my_svm):
     # get the separating hyperplane
     w = my_svm.coef_[0]
     a = -w[0] / w[1]
-    xx = np.linspace(X.iloc[:,0].min(), X.iloc[:,1].max())
+    xx = np.linspace(X.iloc[:,0].min(), X.iloc[:,0].max()) # Changed so we are taking min, max on the same coordinate
     yy = a * xx - (my_svm.intercept_[0]) / w[1]
     # plot the parallels to the separating hyperplane that pass through the
-    # support vectors
-    b = my_svm.support_vectors_[0]
-    yy_down = a * xx + (b[1] - a * b[0])
-    b = my_svm.support_vectors_[-1]
+    # support vectors.
+    b = my_svm.support_vectors_[np.abs(my_svm.decision_function(my_svm.support_vectors_)-1).argmin()]
+    yy_down = a * xx + (b[1] - a * b[0])  #By solving equation b[1] = a * b[0] + c for c.
+    b = my_svm.support_vectors_[np.abs(my_svm.decision_function(my_svm.support_vectors_)+1).argmin()]
     yy_up = a * xx + (b[1] - a * b[0])
     # plot the line, the points, and the nearest vectors to the plane
     plt.plot(xx, yy, 'k-')
