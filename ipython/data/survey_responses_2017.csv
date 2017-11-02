@@ -127,6 +127,5 @@ id,cs_python,cs_java,cs_c,cs_perl,cs_javascript,cs_r,cs_sas,profile_1,profile_2,
 ,1,1,0,0,0,1,0,5,8,8,9,6,6,5,Apples,514,Summer,4,"5+ years, I'm a veteran!"
 ,0,0,0,0,0,1,0,6,3,2,6,1,1,7,Apples,699,Summer,3,"2-5 years, I'm getting good at what I do!"
 ,1,0,1,0,0,1,0,4,4,5,5,5,5,4,Apples,207,Summer,1,"None, I just finished my undergrad!"
-,1,1,1,0,1,1,0,,,,,,,,Oranges,0,Fall,1,"None, I just finished my undergrad!"
 ,1,1,1,0,1,0,0,1,7,7,2,3,1,1,Apples,371,Fall,1,"None, I just finished my undergrad!"
 ,1,1,1,0,0,1,0,8,8,7,6,8,1,3,Apples,591,Summer,1,"None, I just finished my undergrad!"
