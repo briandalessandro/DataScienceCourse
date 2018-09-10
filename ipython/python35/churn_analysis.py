@@ -77,7 +77,7 @@ def makeBar(df, h, lab,  width):
 	'''
 	Contains
 	'''
-	df_s = df.sort(columns = [h], ascending = False)
+	df_s = df.sort_values(by = [h], ascending = False)
 
 	#Get a barplot
 	ind = np.arange(df_s.shape[0])
@@ -87,7 +87,7 @@ def makeBar(df, h, lab,  width):
 	ax = plt.subplot(111)
 	plt.subplots_adjust(bottom = 0.25)
 
-	rec = ax.bar(ind + width, df_s[[h]].values, width, color='r')
+	rec = ax.bar(ind + width, df_s[h].values, width, color='r')
 
 	ax.set_xticks(ind + getTickAdj(labs, width))
 	ax.set_xticklabels(labs, rotation = 45, size = 14)
@@ -130,7 +130,7 @@ def makeBarSigned(df, h, lab,  width):
 	'''
 	Contains
 	'''
-	df_s = df.sort(columns = [h], ascending = False)
+	df_s = df.sort_values(by = [h], ascending = False)
 
 	#Get a barplot
 	ind = np.arange(df_s.shape[0])
