@@ -36,7 +36,9 @@ def downSample(dat,fld,mult):
     neg_shuf=neg.reindex(np.random.permutation(neg.index))
     tot=min(pos.shape[0]*mult,neg.shape[0])
     fin_temp=pos.append(neg_shuf[:tot],ignore_index=True)
-    fin_temp=fin_temp.reindex(np.random.permutation(fin_temp.index))
+    fin_temp['r'] = np.random.random(fin_temp.shape[0]) 
+    fin_temp = fin_temp.sort_values(by = 'r').reset_index(drop = True)
+    fin_temp = fin_temp.drop('r', 1)    
     return fin_temp
 
 
