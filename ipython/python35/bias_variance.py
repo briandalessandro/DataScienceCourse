@@ -9,8 +9,8 @@ from sklearn import linear_model
 
 def simPolynomial(sigma = 0, betas = [0, 0], n = 100):
 
-    x = np.random.uniform(0, 100, n)
-    e = np.random.normal(0, sigma, n)
+    x = np.random.uniform(0, 100, int(n))
+    e = np.random.normal(0, sigma, int(n))
 
     d = pd.DataFrame(x, columns=['x'])    
     y = e
