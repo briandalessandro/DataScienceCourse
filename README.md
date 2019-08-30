@@ -6,4 +6,4 @@ I will start this year to invite pull requests, but I'll only merge them if you 
 
 The course syllabus can be found here.
 
-https://github.com/briandalessandro/DataScienceCourse/blob/master/ipython/references/Syllabus_2018.pdf
+https://github.com/briandalessandro/DataScienceCourse/blob/master/ipython/references/Syllabus_2019.pdf
